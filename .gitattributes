@@ -1,0 +1,24 @@
+
+# Treat Terraform files as text
+*.tf diff
+*.tfstate binary
+*.tfvars diff
+
+# For JSON files, use JSON specific diffs
+*.json diff=json
+
+# Handle end-of-line conversion automatically
+* text=auto
+
+# Ignore binary files for diffing
+*.zip binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.exe binary
+
+# Mark sensitive files as not to be merged
+*.key merge=ours
+*.pem merge=ours
+*.p12 merge=ours
