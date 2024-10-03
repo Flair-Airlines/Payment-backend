@@ -6,7 +6,7 @@ resource "aws_vpc" "main" {
 
   tags = merge(
     {
-      Name = "MyVPC"
+      Name = "${var.vpc_name}-VPC"
     },
     var.tags
   )
@@ -22,7 +22,7 @@ resource "aws_subnet" "public" {
 
   tags = merge(
     {
-      Name = "PublicSubnet"
+      Name = "${var.vpc_name}-PublicSubnet"
     },
     var.tags
   )
@@ -37,7 +37,7 @@ resource "aws_subnet" "private" {
 
   tags = merge(
     {
-      Name = "PrivateSubnet"
+      Name = "${var.vpc_name}-PrivateSubnet"
     },
     var.tags
   )
@@ -47,6 +47,13 @@ resource "aws_subnet" "private" {
 # Internet Gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
+
+  tags = merge(
+    {
+      Name = "${var.vpc_name}-InternetGateway"
+    },
+    var.tags
+  )
 }
 
 # Public Route Table
@@ -57,6 +64,13 @@ resource "aws_route_table" "public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
+
+  tags = merge(
+    {
+      Name = "${var.vpc_name}-PublicRouteTable"
+    },
+    var.tags
+  )
 }
 
 # Associate Route Table with Public Subnet
@@ -68,6 +82,13 @@ resource "aws_route_table_association" "public" {
 # NAT Gateway
 resource "aws_eip" "nat" {
   domain = "vpc"
+
+  tags = merge(
+    {
+      Name = "${var.vpc_name}-ElasticIP"
+    },
+    var.tags
+  )
 }
 
 resource "aws_nat_gateway" "nat" {
@@ -84,6 +105,13 @@ resource "aws_route_table" "private" {
     cidr_block = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat.id
   }
+
+  tags = merge(
+    {
+      Name = "${var.vpc_name}-PrivateRouteTable"
+    },
+    var.tags
+  )
 }
 
 # Associate Route Table with Private Subnet
@@ -135,7 +163,7 @@ resource "aws_security_group" "dynamodb_sg" {
 
   tags = merge(
     {
-      Name = "DynamoDBEndpointSG"
+      Name = "${var.vpc_name}-DynamoDBEndpointSG"
     },
     var.tags
   )

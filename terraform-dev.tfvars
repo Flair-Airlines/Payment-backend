@@ -5,6 +5,9 @@ aws_region = "ca-central-1"
 # CIDR block for the VPC
 vpc_cidr_block = "10.0.0.0/16"
 
+#Name of VPC
+vpc_name = "Audit-Infra"
+
 # CIDR block for the public subnet
 public_subnet_cidr = "10.0.1.0/24"
 
