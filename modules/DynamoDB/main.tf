@@ -1,9 +1,17 @@
 # Fetch the current AWS account details
 data "aws_caller_identity" "current" {}
 
+# Create a random ID to append to bucket names
+resource "random_id" "random_hex" {
+  byte_length = 8  # Generates a random 8-byte string for uniqueness
+}
+
 # S3 Bucket to store audit logs
 resource "aws_s3_bucket" "dynamodb_audit_logs" {
-  bucket = "${var.table_name}-audit-logs"
+  bucket = format("%s-%s", replace(var.table_name, "_", "-"), random_id.random_hex.hex)  # Format bucket name with random suffix
+tags = {
+    Name = "${var.table_name}-dynamodb_audit_logs"           # Tag for the S3 bucket (ledger entries)
+  }
 }
 
 # Remove the block public access settings (allow public access)

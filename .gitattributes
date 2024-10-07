@@ -1,4 +1,3 @@
-
 # Treat Terraform files as text
 *.tf diff
 *.tfstate binary

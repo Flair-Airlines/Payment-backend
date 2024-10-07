@@ -1,3 +1,8 @@
+variable "vpc_name" {
+  description = "Prefix for resource names"
+  type        = string
+}
+
 variable "vpc_cidr_block" {
   description = "CIDR block for the VPC"
   type        = string
@@ -28,7 +33,12 @@ variable "aws_region" {
   description = "The AWS region to deploy resources in"
 }
 
-variable "vpc_name" {
-  type        = string
-  description = "Name of VPC"
+output "dynamodb_vpc_endpoint_id" {
+  description = "The ID of the DynamoDB VPC Endpoint."
+  value       = aws_vpc_endpoint.dynamodb.id
+}
+
+output "dynamodb_security_group_id" {
+  description = "The ID of the security group for the DynamoDB VPC Endpoint."
+  value       = aws_security_group.dynamodb_sg.id
 }
